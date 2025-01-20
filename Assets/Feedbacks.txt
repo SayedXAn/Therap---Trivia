@@ -1,0 +1,34 @@
+Changes for Trivia (Therap Trivia):
+
+For correct answers: In the first line show "10 Points", in the second line show randomly any of these three:
+That's Correct! Keep it up!
+That’s right! Well done!
+Correct! Great job! - DONE
+
+For Wrong answers: In the first line show "5 Points", in the second line show
+Incorrect. Try the next one!
+Wrong answer. Don’t give up! - DONE
+
+
+Last text after the game ends: Change "You've Outdone Yourself" to 
+"Thanks for playing! Your final score is [Score]." - DONE
+
+When the time runs out:
+"Time's Up!" - DONE
+
+Make the correct answer option box more highlighted.
+Make the border highlighted
+Use a deeper shade of green - DONE
+
+On the left side, write "Person-Centered. Data-Driven." together as per our logo. - DONE
+
+Make the sound effect of selecting the right answer a bit louder. - DONE
+
+Add the leaderboard. - DONE
+
+Backend access for adding / removing / adjusting questions. - We have a better solution.
+
+Backend access for clearing the leaderboard (applicable for all the games). - Need discussion
+
+Some answer options are lengthy sentences, making them difficult to read in small answer boxes.
+To address this, increase the size of the answer boxes so that all text is easily readable without any inconvenience to the participants. - DONE
