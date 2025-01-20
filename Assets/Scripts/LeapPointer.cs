@@ -122,7 +122,12 @@ public class LeapPointerController : MonoBehaviour
         Hand hand = GetHand();
         if (hand != null && hand.fingers.Length > 1)
         {
+            pointerRect.gameObject.SetActive(true);
             return hand.fingers[1].TipPosition;
+        }
+        else
+        {
+            pointerRect.gameObject.SetActive(false);
         }
         return Vector3.zero;
     }
