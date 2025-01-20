@@ -3,9 +3,12 @@
 
 # Allow the Scripts folder
 !Assets/Scripts/
+!Assets/Scenes/
 
 # Allow files within the Scripts folder
 !Assets/Scripts/**
+!Assets/Scenes/**
 
 # Ignore meta files in Scripts folder if needed
 Assets/Scripts/*.meta
+Assets/Scenes/*.meta
