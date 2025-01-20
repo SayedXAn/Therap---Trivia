@@ -57,12 +57,15 @@ public class GameManager : MonoBehaviour
     private bool quizOn = false;
     private bool menuOn = true;
     private bool timeUp = false;
+    private bool TestingOn = false;
     
     private int score = 0;
     private int currentQuestion = 0;
 
     private string[] bhaloKotha = { "That's Correct! Keep it up!", "That’s right! Well done!", "Correct! Great job!" };
     private string[] kharapKotha = { "Incorrect. Try the next one!", "Wrong answer. Don’t give up!"};
+
+    private List<int> selectedQuestions = new List<int>();
 
     [Header("Colors")]
     Color32 bluee = new Color32(15, 0, 128, 255);
@@ -93,10 +96,19 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
+        /*if (Input.GetKeyDown(KeyCode.T))
+        {
+            if(!TestingOn)
+            {
+                TestingOn = true;
+                StartCoroutine(TestingQuestions());
+            }
+        }*/
     }
 
     public void GenerateQuestion()
     {
+        
         QuestionOptionAnimationReset();
         hasAnswered = false;
         StopAllCoroutines();
@@ -113,7 +125,7 @@ public class GameManager : MonoBehaviour
         }
         ResetOptions();
         nextButton.SetActive(false);
-        List<int> selectedQuestions = new List<int>();
+        
         int randInt = Random.Range(0, db.table.Count);
         while(selectedQuestions.Contains(randInt))
         {
@@ -312,4 +324,32 @@ public class GameManager : MonoBehaviour
             StopCoroutine(ShowPlayerPositon());
         }
     }
+
+    //this is only for testing
+    /*IEnumerator TestingQuestions()
+    {
+
+        QuestionOptionAnimationReset();
+        hasAnswered = false;
+        ResetOptions();
+        int randInt = Random.Range(0, db.table.Count);
+        while (selectedQuestions.Contains(randInt))
+        {
+            randInt = Random.Range(0, db.table.Count);
+        }
+
+        selectedQuestions.Add(randInt);
+        Debug.Log("rand int: " +randInt + "  list size: " +selectedQuestions.Count);
+        //generateButtonText.text = randInt.ToString();
+        question.text = db.GetValueFromDB(randInt, 0);
+        for (int i = 0; i < optionsText.Length; i++)
+        {
+            optionsText[i].text = db.GetValueFromDB(randInt, i + 1);
+        }
+        currentCorrect = int.Parse(db.GetValueFromDB(randInt, 5));
+        QuestionOptionAnimation();
+        
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(TestingQuestions());
+    }*/
 }
