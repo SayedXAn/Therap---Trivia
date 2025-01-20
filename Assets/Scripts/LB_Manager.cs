@@ -14,7 +14,8 @@ public class LBManager : MonoBehaviour
     public GameObject mainLB;
     public int leaderboardSize = 15;
     public float loadingTime = 2f;
-
+    [SerializeField] private Transform scrollViewContent;
+    [SerializeField] private GameObject entryPrefab;
     //public UIManager uiman;
     private void Start()
     {
@@ -23,9 +24,7 @@ public class LBManager : MonoBehaviour
             SetEntry(" ", -1);
         }*/
     }
-
-    [SerializeField] private Transform scrollViewContent;
-    [SerializeField] private GameObject entryPrefab;
+    
     private const string API_URL = "https://leaderboard-backend.mern.singularitybd.net/api/v1/leaderboard?game=2";
     private const string API_TOKEN = "9b1de5f407f1463e7b2a921bbce364";
 

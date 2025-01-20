@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using Leap;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using TMPro;
 
 public class LeapPointerController : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class LeapPointerController : MonoBehaviour
     public float pinchThreshold = 0.02f;
     public float sensitivity = 1.0f; // Sensitivity multiplier
     public float bottomBuffer = -540f; // Sensitivity multiplier
-
+    public float scrollSpeed = 0.3f;
     private PointerEventData pointerEventData;
     private EventSystem eventSystem;
 
@@ -35,7 +36,7 @@ public class LeapPointerController : MonoBehaviour
         Vector3 tipPosition = GetLeapTipPosition();
         Vector2 canvasPosition = ConvertToCanvasSpace(tipPosition);
         float temp = Mathf.Clamp((canvasPosition.y + bottomBuffer) * sensitivity, -540f, 540f);
-        Debug.Log(temp);
+        //Debug.Log(temp);
         pointerRect.anchoredPosition = new Vector2(canvasPosition.x, temp);
         RaycastButton();
     }
@@ -57,11 +58,33 @@ public class LeapPointerController : MonoBehaviour
         if (results.Count > 0)
         {
             Button button = null;
+            ScrollRect scrollRect = null;
+
             foreach (var result in results)
             {
+                // Check for Button
                 if (result.gameObject.GetComponent<Button>() != null)
                 {
                     button = result.gameObject.GetComponent<Button>();
+                }
+                // Check for TMP_InputField
+                else if (result.gameObject.GetComponent<TMP_InputField>() != null)
+                {
+                    result.gameObject.GetComponent<TMP_InputField>().ActivateInputField();
+                }
+                // Check for ScrollRect on the current object or its parents
+                else
+                {
+                    Transform parent = result.gameObject.transform;
+                    while (parent != null)
+                    {
+                        if (parent.GetComponent<ScrollRect>() != null)
+                        {
+                            scrollRect = parent.GetComponent<ScrollRect>();
+                            break;
+                        }
+                        parent = parent.parent;
+                    }
                 }
             }
 
@@ -70,8 +93,16 @@ public class LeapPointerController : MonoBehaviour
                 button.onClick.Invoke();
                 Debug.Log("Button Clicked: " + button.name);
             }
+
+            if (scrollRect != null)
+            {
+                HandleScroll(scrollRect);
+            }
         }
     }
+
+
+
 
     private bool IsPinchGesture()
     {
@@ -100,7 +131,7 @@ public class LeapPointerController : MonoBehaviour
     {
         float normalizedX = Mathf.Clamp((leapPosition.x - leapXMin) / (leapXMax - leapXMin), -1f, 1f) * sensitivity;
         float normalizedY = Mathf.Clamp((leapPosition.z - leapZMin) / (leapZMax - leapZMin), -1f, 1f) ;
-        Debug.Log(normalizedY);
+        //Debug.Log(normalizedY);
         float canvasX = normalizedX * (canvasRect.sizeDelta.x / 2);
         float canvasY = normalizedY * (canvasRect.sizeDelta.y ) ;
 
@@ -120,4 +151,24 @@ public class LeapPointerController : MonoBehaviour
         }
         return null;
     }
+    private void HandleScroll(ScrollRect scrollRect)
+    {
+         // Adjust the sensitivity for scroll movement
+
+        // Scroll direction based on pinch gesture or manual trigger
+        float scrollDirection = IsPinchGesture() ? -1f : 1f;
+
+        // Adjust the scroll position
+        scrollRect.verticalNormalizedPosition += scrollDirection * scrollSpeed * Time.deltaTime;
+
+        // Clamp the scroll position to stay within bounds
+        scrollRect.verticalNormalizedPosition = Mathf.Clamp01(scrollRect.verticalNormalizedPosition);
+
+        Debug.Log($"Scroll Position Updated: {scrollRect.verticalNormalizedPosition}");
+    }
+
+
+
+
+
 }

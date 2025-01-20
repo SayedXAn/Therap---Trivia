@@ -47,7 +47,8 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Variables")]
-    [SerializeField] int timer = 15;
+    [SerializeField] int timer = 20;
+    [SerializeField] int questionPerPlayer = 6;
     [SerializeField] float finishPanelTime = 5f;
     
     private bool hasAnswered = false;
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
         bgmAS.loop = true;
         bgmAS.Play();
         menuOn = true;
+        nameIF.ActivateInputField();
     }
 
     private void Update()
@@ -98,12 +100,12 @@ public class GameManager : MonoBehaviour
         QuestionOptionAnimationReset();
         hasAnswered = false;
         StopAllCoroutines();
-        if(currentQuestion < 10)
+        if(currentQuestion < questionPerPlayer)
         {
             currentQuestion++;            
             stageLines[currentQuestion - 1].color = orangeColor;
         }
-        else if(currentQuestion == 10)
+        else if(currentQuestion == questionPerPlayer)
         {
             StartCoroutine(GameFinish());
             StartCoroutine(ShowPlayerPositon());
@@ -151,7 +153,7 @@ public class GameManager : MonoBehaviour
                 score += 5;
                 scoreText.text = score.ToString();
                 optionsBG[buttonId].transform.GetChild(1).gameObject.SetActive(true);
-                optionsText[buttonId].color = offWhitee;
+                //optionsText[buttonId].color = offWhitee;
                 PaintOptions(currentCorrect);
                 PlaySFX(1);
             }            
@@ -191,7 +193,7 @@ public class GameManager : MonoBehaviour
             optionsBG[i].transform.GetChild(1).gameObject.SetActive(false);
             optionsBG[i].transform.GetChild(2).gameObject.SetActive(false);
             optionsBG[i].transform.GetChild(5).gameObject.SetActive(false);
-            optionsText[i].color = bluee;
+            //optionsText[i].color = bluee;
         }
     }
 
@@ -229,7 +231,7 @@ public class GameManager : MonoBehaviour
             hasAnswered = true;
             nextButton.SetActive(true);
             PaintOptions(currentCorrect);
-            timer = 15;
+            timer = 20;
             timerBG.SetActive(false);
             notificationText.text = "Time's Up!";
         }
@@ -239,7 +241,7 @@ public class GameManager : MonoBehaviour
     {
         quizOn = true;
         hasAnswered = false;
-        timer = 15;
+        timer = 20;
         timerBG.SetActive(true);
         timerText.text = "Time Left\n" + timer.ToString();
         StartCoroutine(Timer());
