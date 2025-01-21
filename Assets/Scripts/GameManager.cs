@@ -111,6 +111,7 @@ public class GameManager : MonoBehaviour
         
         QuestionOptionAnimationReset();
         hasAnswered = false;
+        timeUp = false;
         StopAllCoroutines();
         if(currentQuestion < questionPerPlayer)
         {
