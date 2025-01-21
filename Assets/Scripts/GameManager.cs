@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
     private bool menuOn = true;
     private bool timeUp = false;
     private bool TestingOn = false;
+    public int timeBonus = 0;
     
     private int score = 0;
     private int currentQuestion = 0;
@@ -147,6 +149,7 @@ public class GameManager : MonoBehaviour
 
     public void OnButtonPress(int buttonId)
     {
+        timeBonus = timer;
         StopAllCoroutines();
         quizOn = false;
         if(!hasAnswered)
@@ -154,8 +157,8 @@ public class GameManager : MonoBehaviour
             optionsBG[buttonId].transform.GetChild(5).gameObject.SetActive(true);
             if (currentCorrect == buttonId)
             {
-                notificationText.text = "10 points\n" + bhaloKotha[Random.Range(0, bhaloKotha.Length)];
-                score += 10;
+                score = score + 10 + timeBonus;
+                notificationText.text = (10 + timeBonus).ToString()+" points\n" + bhaloKotha[Random.Range(0, bhaloKotha.Length)];                
                 scoreText.text = score.ToString();
                 optionsBG[buttonId].transform.GetChild(0).gameObject.SetActive(true);
                 PlaySFX(0);
