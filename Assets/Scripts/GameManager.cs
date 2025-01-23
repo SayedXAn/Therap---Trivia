@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Panels")]
     public GameObject MenuPanel;
+    public GameObject InstructionPanel;
     public GameObject QuizPanel;
     public GameObject GOPanel;
 
@@ -35,7 +36,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text notificationText;
     public TMP_Text scoreText;
     public TMP_Text finishText;
+    public TMP_Text instructionText;
     public TMP_InputField nameIF;
+    public string insText = "Place your hand over the leap motion device and Navigate your hand to the correct option. \r\n\r\nPinch with your thumb and index fingers to choose the right answer.\r\n\r\nThe faster you answer,\r\nthe more points you score!”\r\n\r\nTrivia starting in: ";
 
     [Header("Audio")]
     public AudioSource bgmAS;
@@ -51,6 +54,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] int timer = 20;
     [SerializeField] int questionPerPlayer = 6;
     [SerializeField] float finishPanelTime = 5f;
+    [SerializeField] float instructionTime = 5f;
+    [SerializeField] float goToNextQuesTime = 3f;
     
     private bool hasAnswered = false;
     private int currentCorrect = -1;
@@ -145,15 +150,43 @@ public class GameManager : MonoBehaviour
         notificationText.text = "";
         ResetTimer();
         QuestionOptionAnimation();
+
     }
 
-    public void OnButtonPress(int buttonId)
+
+    public void ShowInstructionPanel()
     {
-        timeBonus = timer;
-        StopAllCoroutines();
-        quizOn = false;
+        StartCoroutine(ShowInstruction());
+    }
+    IEnumerator ShowInstruction()
+    {
+        MenuPanel.SetActive(false);
+        InstructionPanel.SetActive(true);
+        instructionText.text = insText + instructionTime.ToString() + " Second(s)";
+        yield return new WaitForSeconds(1f);
+        instructionTime--;
+        if(instructionTime > 0)
+        {
+            StartCoroutine(ShowInstruction());
+        }
+        else
+        {
+
+            InstructionPanel.SetActive(false);
+            QuizPanel.SetActive(true);
+            GOPanel.SetActive(false);
+            GenerateQuestion();
+            quizOn = true;
+            StopCoroutine(ShowInstruction());
+        }
+    }
+    public void OnButtonPress(int buttonId)
+    {        
         if(!hasAnswered)
         {
+            timeBonus = timer;
+            StopCoroutine(Timer());
+            quizOn = false;
             optionsBG[buttonId].transform.GetChild(5).gameObject.SetActive(true);
             if (currentCorrect == buttonId)
             {
@@ -165,18 +198,26 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                notificationText.text = "5 points\n" + kharapKotha[Random.Range(0, kharapKotha.Length)];
-                score += 5;
-                scoreText.text = score.ToString();
+                notificationText.text = kharapKotha[Random.Range(0, kharapKotha.Length)];
+                //score += 5;
+                //scoreText.text = score.ToString();
                 optionsBG[buttonId].transform.GetChild(1).gameObject.SetActive(true);
                 //optionsText[buttonId].color = offWhitee;
                 PaintOptions(currentCorrect);
                 PlaySFX(1);
-            }            
-            nextButton.SetActive(true);
+            }
+            //nextButton.SetActive(true);
+            StartCoroutine(GoToNextQuestion());
             timerBG.SetActive(false);
-        }
-        hasAnswered = true;
+            hasAnswered = true;
+        }        
+    }
+
+    IEnumerator GoToNextQuestion()
+    {
+        yield return new WaitForSeconds(goToNextQuesTime);
+        GenerateQuestion();
+        StopCoroutine(GoToNextQuestion());
     }
 
     public void PaintOptions(int correctOption)
@@ -222,11 +263,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            MenuPanel.SetActive(false);
-            QuizPanel.SetActive(true);
-            GOPanel.SetActive(false);
-            GenerateQuestion();
-            quizOn = true;
+            StartCoroutine(ShowInstruction());
         }        
     }
 
@@ -239,17 +276,18 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(Timer());
         }
-        else
+        else if(quizOn && timer == 0 && !hasAnswered)
         {
             StopCoroutine(Timer());
             timeUp = true;
             quizOn = false;
             hasAnswered = true;
-            nextButton.SetActive(true);
+            //nextButton.SetActive(true);            
             PaintOptions(currentCorrect);
             timer = 20;
             timerBG.SetActive(false);
             notificationText.text = "Time's Up!";
+            StartCoroutine(GoToNextQuestion());
         }
     }
 
@@ -271,15 +309,24 @@ public class GameManager : MonoBehaviour
         GOPanel.SetActive(true);
         finishText.text = "Thanks for playing!\nYour final score is " + score.ToString() +"\n ";
         yield return new WaitForSeconds(finishPanelTime);
-        GoToLeaderboard();
+        StartCoroutine(GoToLeaderboard());
     }
-
-    public void GoToLeaderboard()
+    public void ShowLeaderboardManually()
     {
         MenuPanel.SetActive(false);
         QuizPanel.SetActive(false);
         GOPanel.SetActive(false);
         lbMan.GenerateLeaderboard();
+    }
+
+    IEnumerator GoToLeaderboard()
+    {
+        MenuPanel.SetActive(false);
+        QuizPanel.SetActive(false);
+        GOPanel.SetActive(false);
+        lbMan.GenerateLeaderboard();
+        yield return new WaitForSeconds(10f);
+        SceneManager.LoadScene("Trivia");
     }
 
     public void HomeButton()

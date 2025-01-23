@@ -206,8 +206,8 @@ MonoBehaviour:
   m_text: "Transaction Date, Transaction Category, Amount, Balance, Merchant, Comments,
     Entered By, Update Date, Attachment\r"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3426460899930234eb47d87e50d21d38, type: 2}
-  m_sharedMaterial: {fileID: 892477780277019846, guid: 3426460899930234eb47d87e50d21d38, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d7ec07a13e85008488ed2d6320640e29, type: 2}
+  m_sharedMaterial: {fileID: -5711265019157871096, guid: d7ec07a13e85008488ed2d6320640e29, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

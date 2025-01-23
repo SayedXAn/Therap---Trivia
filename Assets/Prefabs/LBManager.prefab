@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6367275015905661054
+--- !u!1 &7418268167165216908
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7109474486590294110}
-  - component: {fileID: 8093074759973444553}
+  - component: {fileID: 8521523298526182816}
+  - component: {fileID: 8070793823024964188}
   m_Layer: 0
-  m_Name: 'LeapPointer '
+  m_Name: LBManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7109474486590294110
+--- !u!4 &8521523298526182816
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6367275015905661054}
+  m_GameObject: {fileID: 7418268167165216908}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 939.5563, y: 544.12415, z: -1753.3835}
+  m_LocalPosition: {x: 916.1286, y: 536.2677, z: 3.926794}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8093074759973444553
+--- !u!114 &8070793823024964188
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6367275015905661054}
+  m_GameObject: {fileID: 7418268167165216908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b15b796d5ecfd84787709ecdde7266b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e633242d7729104b9d5296e000461f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasRect: {fileID: 0}
-  pointerRect: {fileID: 0}
-  pinchThreshold: 0.02
-  sensitivity: 1
-  yBuffer: -540
-  xBuffer: -960
-  scrollSpeed: 0.3
+  mngr: {fileID: 0}
+  LBUI: {fileID: 0}
+  loadingScreen: {fileID: 0}
+  mainLB: {fileID: 0}
+  leaderboardSize: 15
+  loadingTime: 2
+  scrollViewContent: {fileID: 0}
+  entryPrefab: {fileID: 7683515205531864878, guid: 0adc6527d92af1949b4913f249794db0, type: 3}
+  playerPosition: -1
